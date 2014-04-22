@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 using Biggy;
 using Biggy.Postgres;
+using Xunit;
 
-namespace Tests.Postgres
-{
+namespace Tests.Postgres {
   [Trait("PG Document Store", "")]
-  public class PostgresDocumentStore
-  {
+  public class PostgresDocumentStore {
     string _connectionStringName = "chinookPG";
-    IBiggyStore<Client> _biggyStore;
-    IUpdateableBiggyStore<Client> _updateableStore;
-    IQueryableBiggyStore<Client> _queryableStore;
-    PGStore<Client> _sqlStore;
 
     PGDocumentStore<ClientDocument> clientDocs;
     PGDocumentStore<MonkeyDocument> monkeyDocs;
@@ -27,7 +19,7 @@ namespace Tests.Postgres
       // Build a table to play with from scratch each time:
 
       // This needs a fix - gotta pass undelimited table name to one, and delimited to the other. FIX ME, DAMMIT!
-      if(_cache.TableExists("ClientDocuments")) {
+      if (_cache.TableExists("ClientDocuments")) {
         _cache.DropTable("\"ClientDocuments\"");
       }
       if (_cache.TableExists("MonkeyDocuments")) {

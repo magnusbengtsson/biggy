@@ -58,6 +58,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Biggy.Postgres\Biggy.Postgres.csproj">
+      <Project>{83a6ea8b-fab7-4965-9159-44e522837011}</Project>
+      <Name>Biggy.Postgres</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Biggy\Biggy.csproj">
       <Project>{49dbd996-032d-4b58-b35a-2621da0eaeaf}</Project>
       <Name>Biggy</Name>

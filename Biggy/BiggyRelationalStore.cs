@@ -46,10 +46,10 @@ namespace Biggy
     /// Returns all records complying with the passed-in WHERE clause and arguments, 
     /// ordered as specified, limited (TOP) by limit.
     /// </summary>
-    public virtual IEnumerable<T> All<T>(string where = "", string orderBy = "", int limit = 0, string columns = "*", params object[] args) where T : new() {
+    public virtual IEnumerable<T1> All<T1>(string where = "", string orderBy = "", int limit = 0, string columns = "*", params object[] args) where T1 : new() {
       string sql = this.BuildSelect(where, orderBy, limit);
       var formatted = string.Format(sql, columns, this.tableMapping.DelimitedTableName);
-      return Query<T>(formatted, args);
+      return Query<T1>(formatted, args);
     }
 
     public virtual T Insert(T item) {
@@ -213,10 +213,10 @@ namespace Biggy
     /// <summary>
     /// Returns a single row from the database
     /// </summary>
-    public virtual T Find<T>(object key) where T : new() {
-      var result = new T();
+    public virtual T1 Find<T1>(object key) where T1 : new() {
+      var result = new T1();
       var sql = this.GetSingleSelect(this.tableMapping.DelimitedTableName, this.PrimaryKeyMapping.DelimitedColumnName + "=@0");
-      return Query<T>(sql, key).FirstOrDefault();
+      return Query<T1>(sql, key).FirstOrDefault();
     }
 
     /// <summary>
@@ -235,25 +235,25 @@ namespace Biggy
     /// <summary>
     /// Enumerates the reader yielding the result - thanks to Jeroen Haegebaert
     /// </summary>
-    public virtual IEnumerable<T> Query<T>(string sql, params object[] args) where T : new() {
+    public virtual IEnumerable<T1> Query<T1>(string sql, params object[] args) where T1 : new() {
       using (var conn = Cache.OpenConnection()) {
         var rdr = this.CreateCommand(sql, conn, args).ExecuteReader();
         while (rdr.Read()) {
-          yield return this.MapReaderToObject<T>(rdr);
+          yield return this.MapReaderToObject<T1>(rdr);
         }
       }
     }
 
-    public virtual IEnumerable<T> Query<T>(string sql, DbConnection connection, params object[] args) where T : new() {
+    public virtual IEnumerable<T1> Query<T1>(string sql, DbConnection connection, params object[] args) where T1 : new() {
       using (var rdr = this.CreateCommand(sql, connection, args).ExecuteReader()) {
         while (rdr.Read()) {
-          yield return this.MapReaderToObject<T>(rdr);
+          yield return this.MapReaderToObject<T1>(rdr);
         }
       }
     }
 
-    protected virtual T MapReaderToObject<T>(IDataReader reader) where T : new() {
-      var item = new T();
+    protected virtual T1 MapReaderToObject<T1>(IDataReader reader) where T1 : new() {
+      var item = new T1();
       var props = item.GetType().GetProperties();
       foreach (var property in props) {
         if (this.tableMapping.ColumnMappings.ContainsPropertyName(property.Name)) {

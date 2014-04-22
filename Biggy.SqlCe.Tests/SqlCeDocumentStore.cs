@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using Biggy;
 
-namespace Biggy.SqlCe.Tests
-{
+namespace Biggy.SqlCe.Tests {
   [Trait("SQL CE Document Store", "")]
-  public class SqlCeDocumentStoreTest
-  {
+  public class SqlCeDocumentStoreTest {
     string _connectionStringName = "chinook";
-    IBiggyStore<Client> _biggyStore;
-    IUpdateableBiggyStore<Client> _updateableStore;
-    IQueryableBiggyStore<Client> _queryableStore;
-    SqlCeStore<Client> _sqlStore;
 
     SqlCeDocumentStore<ClientDocument> clientDocs;
     SqlCeDocumentStore<MonkeyDocument> monkeyDocs;
@@ -24,7 +15,7 @@ namespace Biggy.SqlCe.Tests
       var context = new SqlCeCache(_connectionStringName);
 
       // Build a table to play with from scratch each time:
-      if(context.TableExists("ClientDocuments")) {
+      if (context.TableExists("ClientDocuments")) {
         context.DropTable("ClientDocuments");
       }
       if (context.TableExists("MonkeyDocuments")) {
@@ -36,8 +27,7 @@ namespace Biggy.SqlCe.Tests
 
 
     [Fact(DisplayName = "Creates a store with a serial PK if one doesn't exist")]
-    public void Creates_Document_Table_With_Serial_PK_If_Not_Present()
-    {
+    public void Creates_Document_Table_With_Serial_PK_If_Not_Present() {
       //clientDocs = new SQLDocumentStore<ClientDocument>(_connectionStringName);
       var queryable = clientDocs as IQueryableBiggyStore<ClientDocument>;
       Assert.True(queryable.AsQueryable().Count() == 0);
@@ -45,18 +35,15 @@ namespace Biggy.SqlCe.Tests
 
 
     [Fact(DisplayName = "Creates a store with a string PK if one doesn't exist")]
-    public void Creates_Document_Table_With_String_PK_If_Not_Present()
-    {
+    public void Creates_Document_Table_With_String_PK_If_Not_Present() {
       //monkeyDocs = new SQLDocumentStore<MonkeyDocument>(_connectionStringName);
       var queryable = monkeyDocs as IQueryableBiggyStore<MonkeyDocument>;
       Assert.True(queryable.AsQueryable().Count() == 0);
     }
 
     [Fact(DisplayName = "Adds a document with a serial PK")]
-    public void Adds_Document_With_Serial_PK()
-    {
-      var newCustomer = new ClientDocument
-      {
+    public void Adds_Document_With_Serial_PK() {
+      var newCustomer = new ClientDocument {
         Email = "rob@tekpub.com",
         FirstName = "Rob",
         LastName = "Conery"
@@ -69,10 +56,8 @@ namespace Biggy.SqlCe.Tests
     }
 
     [Fact(DisplayName = "Updates a document with a serial PK")]
-    public void Updates_Document_With_Serial_PK()
-    {
-      var newCustomer = new ClientDocument
-      {
+    public void Updates_Document_With_Serial_PK() {
+      var newCustomer = new ClientDocument {
         Email = "rob@tekpub.com",
         FirstName = "Rob",
         LastName = "Conery"
@@ -93,10 +78,8 @@ namespace Biggy.SqlCe.Tests
 
 
     [Fact(DisplayName = "Deletes a document with a serial PK")]
-    public void Deletes_Document_With_Serial_PK()
-    {
-      var newCustomer = new ClientDocument
-      {
+    public void Deletes_Document_With_Serial_PK() {
+      var newCustomer = new ClientDocument {
         Email = "rob@tekpub.com",
         FirstName = "Rob",
         LastName = "Conery"
@@ -113,14 +96,12 @@ namespace Biggy.SqlCe.Tests
 
 
     [Fact(DisplayName = "Bulk-Inserts new records as JSON documents with string key")]
-    public void Bulk_Inserts_Documents_With_String_PK()
-    {
+    public void Bulk_Inserts_Documents_With_String_PK() {
       var updateable = monkeyDocs as IUpdateableBiggyStore<MonkeyDocument>;
       int INSERT_QTY = 100;
 
       var addRange = new List<MonkeyDocument>();
-      for (int i = 0; i < INSERT_QTY; i++)
-      {
+      for (int i = 0; i < INSERT_QTY; i++) {
         addRange.Add(new MonkeyDocument { Name = "MONKEY " + i, Birthday = DateTime.Today, Description = "The Monkey on my back" });
       }
 
